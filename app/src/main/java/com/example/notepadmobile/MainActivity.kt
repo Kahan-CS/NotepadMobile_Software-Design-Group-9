@@ -1,57 +1,117 @@
 package com.example.notepadmobile
 
+import NoteAdapter
+import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
-import com.example.notepadmobile.databinding.ActivityMainBinding
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NoteAdapter.OnNoteItemClickListener {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
-private lateinit var binding: ActivityMainBinding
+    private val noteList = mutableListOf<NoteItem>()
+    private lateinit var adapter: NoteAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-     binding = ActivityMainBinding.inflate(layoutInflater)
-     setContentView(binding.root)
+        adapter = NoteAdapter(noteList, this)
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
-        setSupportActionBar(binding.toolbar)
-
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
-
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
-    }
-override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when(item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+        val addNoteButton = findViewById<MaterialButton>(R.id.addnewnotebutton)
+        addNoteButton.setOnClickListener {
+            val intent = Intent(this, AddNoteActivity::class.java)
+            startActivityForResult(intent, ADD_NOTE_REQUEST)
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-    val navController = findNavController(R.id.nav_host_fragment_content_main)
-    return navController.navigateUp(appBarConfiguration)
-            || super.onSupportNavigateUp()
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            ADD_NOTE_REQUEST -> handleAddNoteResult(resultCode, data)
+            EDIT_NOTE_REQUEST -> handleEditNoteResult(resultCode, data)
+        }
+    }
+
+    private fun handleAddNoteResult(resultCode: Int, data: Intent?) {
+        if (resultCode == RESULT_OK) {
+            val title = data?.getStringExtra("title") ?: ""
+            val description = data?.getStringExtra("description") ?: ""
+            val timestamp = data?.getStringExtra("timestamp") ?: ""
+            val noteItem = NoteItem(title, description, timestamp)
+            noteList.add(noteItem)
+            adapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun handleEditNoteResult(resultCode: Int, data: Intent?) {
+        if (resultCode == RESULT_OK) {
+            val deleteNote = data?.getBooleanExtra("deleteNote", false) ?: false
+            if (deleteNote) {
+                handleDeletedNoteResult(data)
+            } else {
+                handleEditedNoteResult(data)
+            }
+            adapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun handleDeletedNoteResult(data: Intent?) {
+        val editedTitle = data?.getStringExtra("editedTitle") ?: ""
+        val editedDescription = data?.getStringExtra("editedDescription") ?: ""
+        val editedTimestamp = data?.getStringExtra("editedTimestamp") ?: ""
+
+        // Find and remove the edited note from the list
+        val iterator = noteList.iterator()
+        while (iterator.hasNext()) {
+            val note = iterator.next()
+            if (
+                note.timestamp == editedTimestamp
+            ) {
+                iterator.remove()
+                break
+            }
+        }
+    }
+
+    private fun handleEditedNoteResult(data: Intent?) {
+        val editedTitle = data?.getStringExtra("editedTitle") ?: ""
+        val editedDescription = data?.getStringExtra("editedDescription") ?: ""
+        val editedTimestamp = data?.getStringExtra("editedTimestamp") ?: ""
+
+
+        println(editedDescription)
+        println(editedTitle)
+        println(editedTimestamp)
+
+        // Find the edited note and update its details
+        for (i in noteList.indices) {
+            val note = noteList[i]
+            if (note.timestamp == editedTimestamp
+            ) {
+                noteList[i] = NoteItem(editedTitle, editedDescription, editedTimestamp)
+                break
+            }
+        }
+    }
+
+    override fun onNoteItemClick(position: Int) {
+        val selectedNote = noteList[position]
+        val editIntent = Intent(this, EditNoteActivity::class.java)
+        editIntent.putExtra("title", selectedNote.title)
+        editIntent.putExtra("description", selectedNote.description)
+        editIntent.putExtra("timestamp", selectedNote.timestamp)
+        startActivityForResult(editIntent, EDIT_NOTE_REQUEST)
+    }
+
+    companion object {
+        const val ADD_NOTE_REQUEST = 1
+        const val EDIT_NOTE_REQUEST = 2
     }
 }
+
+
