@@ -1,3 +1,4 @@
+import android.provider.ContactsContract.CommonDataKinds.Note
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,18 @@ class NoteAdapter(private val noteList: List<NoteItem>, private val listener: On
     }
 
     override fun getItemCount() = noteList.size
+
+    // Searching Method
+    fun filter(newText: String?) {
+        var filteredNoteList: List<NoteItem> = noteList;
+
+        filteredNoteList = if (newText.isNullOrEmpty()) {
+            noteList
+        } else {
+            noteList.filter { it.title.contains(newText, true) || it.description.contains(newText, true) }
+        }
+            notifyDataSetChanged()
+    }
 
     class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val titleTextView: TextView = itemView.findViewById(R.id.titleout)
