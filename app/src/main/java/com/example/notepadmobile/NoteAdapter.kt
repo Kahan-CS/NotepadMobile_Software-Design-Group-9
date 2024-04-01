@@ -3,7 +3,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.notepadmobile.NoteItem
+import com.example.notepadmobile.data.NoteItem
 import com.example.notepadmobile.R
 
 class NoteAdapter(private val noteList: List<NoteItem>, private val listener: OnNoteItemClickListener) :

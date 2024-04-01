@@ -6,6 +6,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.notepadmobile.data.NoteItem
+import com.example.notepadmobile.utils.UndoRedoManager
 import com.google.android.material.button.MaterialButton
 
 class MainActivity : AppCompatActivity(), NoteAdapter.OnNoteItemClickListener {
@@ -13,12 +15,15 @@ class MainActivity : AppCompatActivity(), NoteAdapter.OnNoteItemClickListener {
     private val noteList = mutableListOf<NoteItem>()
     private lateinit var adapter: NoteAdapter
 
+    private val careTaker = UndoRedoManager();
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         adapter = NoteAdapter(noteList, this)
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
+        val undoBtn = findViewById<MaterialButton>(R.id.undobtn)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -27,8 +32,23 @@ class MainActivity : AppCompatActivity(), NoteAdapter.OnNoteItemClickListener {
             val intent = Intent(this, AddNoteActivity::class.java)
             startActivityForResult(intent, ADD_NOTE_REQUEST)
         }
+
+        undoBtn.setOnClickListener {
+            undoBtnClick()
+        }
     }
 
+    fun undoBtnClick()
+    {
+        val noteMemento = careTaker.undo()
+        val note = NoteItem("", "", "")
+        if (noteMemento != null) {
+            note.restoreFromMemento(noteMemento)
+        }
+
+        noteList.add(note)
+        adapter.notifyDataSetChanged()
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
@@ -72,6 +92,7 @@ class MainActivity : AppCompatActivity(), NoteAdapter.OnNoteItemClickListener {
             if (
                 note.timestamp == editedTimestamp
             ) {
+                careTaker.addToHistory(note.createMemento())
                 iterator.remove()
                 break
             }

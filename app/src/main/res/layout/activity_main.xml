@@ -32,16 +32,25 @@
 
 
     <com.google.android.material.button.MaterialButton
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add new Note"
         android:id="@+id/addnewnotebutton"
+        android:layout_width="285dp"
+        android:layout_height="58dp"
         android:layout_alignParentBottom="true"
-        android:textColor="#F62E2E"
+        android:layout_marginBottom="0dp"
         android:backgroundTint="@color/white"
-        />
+        android:text="Add new Note"
+        android:textColor="#F62E2E" />
 
-
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/undobtn"
+        android:layout_width="285dp"
+        android:layout_height="58dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="7dp"
+        android:layout_toRightOf="@id/addnewnotebutton"
+        android:backgroundTint="@color/white"
+        android:text="Undo Delete"
+        android:textColor="#F62E2E" />
 
 
 </RelativeLayout>

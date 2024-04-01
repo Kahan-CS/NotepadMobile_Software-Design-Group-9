@@ -1,5 +1,6 @@
 package com.example.notepadmobile
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
@@ -14,26 +15,39 @@ import java.util.Calendar
 import java.util.Locale
 
 class AddNoteActivity : AppCompatActivity() {
+    lateinit var titleInput: EditText
+    lateinit var descriptionText: EditText
+    lateinit var saveNoteBtn: MaterialButton
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_note)
 
-        val titleInput = findViewById<EditText>(R.id.titleinput)
-        val descriptionText = findViewById<EditText>(R.id.descriptioninput)
-        val saveNoteBtn = findViewById<MaterialButton>(R.id.savenotebtn)
+        titleInput = findViewById(R.id.titleinput)
+        descriptionText = findViewById(R.id.descriptioninput)
+        saveNoteBtn = findViewById(R.id.savenotebtn)
 
         saveNoteBtn.setOnClickListener {
-            val title = titleInput.text.toString()
-            val description = descriptionText.text.toString()
-            val timestamp = getCurrentTimestamp()
-
-            val intent = Intent()
-            intent.putExtra("title", title)
-            intent.putExtra("description", description)
-            intent.putExtra("timestamp", timestamp)
-            setResult(RESULT_OK, intent)
-            finish()
+            saveNote()
         }
+    }
+
+    private fun saveNote() {
+        val title = titleInput.text.toString()
+        val description = descriptionText.text.toString()
+        val timestamp = getCurrentTimestamp()
+
+        val intent = Intent()
+        intent.putExtra("title", title)
+        intent.putExtra("description", description)
+        intent.putExtra("timestamp", timestamp)
+        setResult(Activity.RESULT_OK, intent)
+        finish()
+    }
+
+    override fun onBackPressed() {
+        saveNote()
+        super.onBackPressed()
     }
 
     private fun getCurrentTimestamp(): String {
