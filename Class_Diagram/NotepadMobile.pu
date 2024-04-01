@@ -1,0 +1,143 @@
+@startuml
+
+allowmixing
+
+/' <style> '/
+/' class { '/
+/' /1' FontStyle bold '1/ '/
+/' LineColor black '/
+/' FontColor midnightblue '/
+/' BackgroundColor oldlace '/
+/' } '/
+/' </style> '/
+
+<style>
+class {
+/' FontStyle bold '/
+BorderColor maroon
+LineColor maroon
+FontColor black
+BackgroundColor cornsilk
+}
+
+title {
+FontSize 48
+FontStyle bold
+}
+package {
+    FontSize 18
+}
+</style>
+
+top to bottom direction
+
+Title "Notepad Mobile"
+
+
+package notepadmobile {
+    class NoteAdapter {
+        - noteList: List<NoteItem>
+        - listener: OnNoteItemClickListener
+
+        + <<Create>> NoteAdapter(noteList: List<NoteItem>, listener: OnNoteItemClickListener)
+        + onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder
+        + onBindViewHolder(holder: NoteViewHolder, position: Int)
+        + getItemCount(): Int
+        + filter(newText: String?)
+    }
+
+    class NoteViewHolder {
+        - itemView: View
+        - titleTextView: TextView
+        - descriptionTextView: TextView
+        - timestampTextView: TextView
+        + <<Create>> NoteViewHolder(itemView: View)
+    }
+
+    interface OnNoteItemClickListener {
+        + <<Create>> onNoteItemClick(position: Int)
+    }
+
+    class AddNoteActivity {
+        - titleInput: EditText
+        - descriptionText: EditText
+        - saveNoteBtn: MaterialButton
+
+        + <<Create>> AddNoteActivity()
+        + onCreate(savedInstanceState: Bundle?)
+        + saveNote()
+        + onBackPressed()
+        - getCurrentTimestamp(): String
+    }
+
+    class NoteMemento {
+        + title: String
+        + description: String
+        + timestamp: String
+
+        + <<Create>> NoteMemento(title: String, description: String, timestamp: String)
+    }
+
+    class NoteItem {
+        - title: String
+        - description: String
+        - timestamp: String
+
+        + <<Create>> NoteItem(title: String, description: String, timestamp: String)
+        + createMemento(): NoteMemento
+        + restoreFromMemento(memento: NoteMemento)
+    }
+
+    class UndoRedoManager {
+        - history: Stack<NoteMemento>
+        - redoHistory: Stack<NoteMemento>
+
+        + <<Create>> UndoRedoManager()
+        + undo(): NoteMemento?
+        + redo(): NoteMemento?
+        + addToHistory(memento: NoteMemento)
+    }
+
+    class Typography {
+        + bodyLarge: TextStyle
+
+        + <<Create>> Typography(bodyLarge: TextStyle)
+    }
+
+    class EditNoteActivity {
+        + <<Create>> EditNoteActivity()
+        + onCreate(savedInstanceState: Bundle?)
+        + saveChanges()
+        + showDeleteConfirmationDialog()
+        + deleteNote()
+        - getCurrentTimestamp(): String
+    }
+
+    class MainActivity {
+        - noteList: MutableList<NoteItem>
+        - adapter: NoteAdapter
+        - careTaker: UndoRedoManager
+
+        + <<Create>> MainActivity()
+        + onCreate(savedInstanceState: Bundle?)
+        + undoBtnClick()
+        + onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
+        + handleAddNoteResult(resultCode: Int, data: Intent?)
+        + handleEditNoteResult(resultCode: Int, data: Intent?)
+        + handleDeletedNoteResult(data: Intent?)
+        + handleEditedNoteResult(data: Intent?)
+        + onNoteItemClick(position: Int)
+        + ADD_NOTE_REQUEST: Int
+        + EDIT_NOTE_REQUEST: Int
+    }
+
+    class NotepadMobileTheme {
+        + <<Create>> NotepadMobileTheme(darkTheme: Boolean = isSystemInDarkTheme(), dynamicColor: Boolean = true, content: @Composable () -> Unit)
+    }
+
+}
+
+NoteAdapter	o--	NoteViewHolder
+
+@enduml
+
