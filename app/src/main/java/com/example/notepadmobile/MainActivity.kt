@@ -3,6 +3,7 @@ package com.example.notepadmobile
 import NoteAdapter
 import android.content.Intent
 import android.os.Bundle
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +28,21 @@ class MainActivity : AppCompatActivity(), NoteAdapter.OnNoteItemClickListener {
             val intent = Intent(this, AddNoteActivity::class.java)
             startActivityForResult(intent, ADD_NOTE_REQUEST)
         }
+
+        val searchView = findViewById<SearchView>(R.id.search_button)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+            override fun onQueryTextSubmit(newText: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                // Filter the adapter when the text in the search view changes
+                adapter.filter(newText)
+                return true // Return true to indicate the query has been handled
+            }
+        })
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

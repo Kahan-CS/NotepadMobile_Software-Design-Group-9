@@ -5,78 +5,73 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#69A4BA"
     android:orientation="vertical"
-    android:background="#F62E2E"
     android:padding="20dp">
 
     <TextView
+        android:id="@+id/titletvt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/titletvt"
-        android:text="Edit Note"
-        android:textSize="25dp"
-        android:gravity="center"
         android:layout_margin="20dp"
+        android:gravity="center"
+        android:text="Edit Note"
         android:textColor="@color/white"
+        android:textSize="25dp"
         android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/rounded_corner"
-        android:padding="10dp"
         android:layout_margin="10dp"
-        >
+        android:background="@drawable/rounded_corner"
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/edit_title_input"
-            android:hint="Title"
-            android:padding="10dp"
-            android:layout_margin="10dp"
-            android:background="#30F62E2E"
-            />
-
-        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/edit_description_input"
-            android:hint="Description"
-            android:padding="10dp"
             android:layout_margin="10dp"
-            android:background="#30F62E2E"
-            android:lines="10"
+            android:background="#BFE1ED"
+            android:hint="Title"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/edit_description_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="top"
-            />
+            android:layout_margin="10dp"
+            android:background="#BFE1ED"
+            android:hint="Description"
+            android:lines="10"
+            android:padding="10dp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginTop="20dp"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/save_changes_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/save_changes_button"
-            android:text="Save Changes"
             android:layout_marginEnd="8dp"
             android:backgroundTint="@color/white"
-            android:textColor="#F62E2E"
-            />
+            android:text="Save Changes"
+            android:textColor="#52A5C3" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/delete_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/delete_button"
-            android:text="Delete Note"
             android:backgroundTint="@color/white"
-            android:textColor="#F62E2E"
-            />
+            android:text="Delete Note"
+            android:textColor="#52A5C3" />
     </LinearLayout>
 
 </LinearLayout>

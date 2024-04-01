@@ -5,43 +5,51 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F62E2E"
+    android:background="#69A4BA"
     android:padding="10dp"
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/notestitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/notestitle"
         android:text="NOTES"
+        android:textColor="@color/white"
         android:textSize="30dp"
         android:textStyle="bold"
-        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recyclerview"
-        android:layout_below="@id/notestitle"
         android:layout_above="@id/addnewnotebutton"
-        />
-
+        android:layout_below="@id/notestitle"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="-2dp" />
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/addnewnotebutton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add new Note"
-        android:id="@+id/addnewnotebutton"
         android:layout_alignParentBottom="true"
-        android:textColor="#F62E2E"
         android:backgroundTint="@color/white"
-        />
+        android:text="Add new Note"
+        android:textColor="#52A5C3" />
 
-
+    <SearchView
+        android:id="@+id/search_button"
+        android:layout_width="193dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="8dp"
+        android:background="#E8E8E8"
+        android:iconifiedByDefault="false"
+        android:queryHint="Search Notes" />
 
 
 </RelativeLayout>
