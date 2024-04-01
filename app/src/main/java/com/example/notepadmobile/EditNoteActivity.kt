@@ -10,8 +10,18 @@ import com.google.android.material.button.MaterialButton
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * Edit note activity
+ *
+ * @constructor Create empty Edit note activity
+ */
 class EditNoteActivity : AppCompatActivity() {
 
+    /**
+     * On create
+     *
+     * @param savedInstanceState
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_note)
@@ -38,6 +48,10 @@ class EditNoteActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Save changes
+     *
+     */
     private fun saveChanges() {
         val editedTitle = findViewById<EditText>(R.id.edit_title_input).text.toString()
         val editedDescription = findViewById<EditText>(R.id.edit_description_input).text.toString()
@@ -66,6 +80,10 @@ class EditNoteActivity : AppCompatActivity() {
         dialog.show()
     }
 
+    /**
+     * Delete note
+     *
+     */
     private fun deleteNote() {
         val editedTitle = findViewById<EditText>(R.id.edit_title_input).text.toString()
         val editedDescription = findViewById<EditText>(R.id.edit_description_input).text.toString()
@@ -81,6 +99,11 @@ class EditNoteActivity : AppCompatActivity() {
     }
 
 
+    /**
+     * Get current timestamp
+     *
+     * @return
+     */
     private fun getCurrentTimestamp(): String {
         val dateFormat = SimpleDateFormat("MMM dd yyyy HH:mm", Locale.getDefault())
         val currentTime = Calendar.getInstance().time

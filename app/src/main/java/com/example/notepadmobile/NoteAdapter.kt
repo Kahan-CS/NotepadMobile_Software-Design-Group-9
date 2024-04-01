@@ -7,18 +7,48 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.notepadmobile.data.NoteItem
 import com.example.notepadmobile.R
 
+/**
+ * Note adapter
+ *
+ * @property noteList
+ * @property listener
+ * @constructor Create empty Note adapter
+ */
 class NoteAdapter(private val noteList: List<NoteItem>, private val listener: OnNoteItemClickListener) :
     RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
+    /**
+     * On note item click listener
+     *
+     * @constructor Create empty On note item click listener
+     */
     interface OnNoteItemClickListener {
+        /**
+         * On note item click
+         *
+         * @param position
+         */
         fun onNoteItemClick(position: Int)
     }
 
+    /**
+     * On create view holder
+     *
+     * @param parent
+     * @param viewType
+     * @return
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.note_item, parent, false)
         return NoteViewHolder(itemView)
     }
 
+    /**
+     * On bind view holder
+     *
+     * @param holder
+     * @param position
+     */
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
         val currentItem = noteList[position]
         holder.titleTextView.text = currentItem.title
@@ -30,9 +60,17 @@ class NoteAdapter(private val noteList: List<NoteItem>, private val listener: On
         }
     }
 
+    /**
+     * Get item count
+     *
+     */
     override fun getItemCount() = noteList.size
 
-    // Searching Method
+    /**
+     * Filter
+     *
+     * @param newText
+     */// Searching Method
     fun filter(newText: String?) {
         var filteredNoteList: List<NoteItem> = noteList;
 
@@ -44,6 +82,13 @@ class NoteAdapter(private val noteList: List<NoteItem>, private val listener: On
             notifyDataSetChanged()
     }
 
+    /**
+     * Note view holder
+     *
+     * @constructor
+     *
+     * @param itemView
+     */
     class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val titleTextView: TextView = itemView.findViewById(R.id.titleout)
         val descriptionTextView: TextView = itemView.findViewById(R.id.descriptionout)

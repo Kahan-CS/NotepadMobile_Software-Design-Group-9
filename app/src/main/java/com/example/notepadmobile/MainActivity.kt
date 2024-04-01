@@ -10,13 +10,22 @@ import com.example.notepadmobile.data.NoteItem
 import com.example.notepadmobile.utils.UndoRedoManager
 import com.google.android.material.button.MaterialButton
 
+/**
+ * Main activity
+ *
+ * @constructor Create empty Main activity
+ */
 class MainActivity : AppCompatActivity(), NoteAdapter.OnNoteItemClickListener {
 
     private val noteList = mutableListOf<NoteItem>()
     private lateinit var adapter: NoteAdapter
-
     private val careTaker = UndoRedoManager();
 
+    /**
+     * On create
+     *
+     * @param savedInstanceState
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -38,6 +47,10 @@ class MainActivity : AppCompatActivity(), NoteAdapter.OnNoteItemClickListener {
         }
     }
 
+    /**
+     * Undo btn click
+     *
+     */
     fun undoBtnClick()
     {
         val noteMemento = careTaker.undo()
@@ -49,6 +62,14 @@ class MainActivity : AppCompatActivity(), NoteAdapter.OnNoteItemClickListener {
         noteList.add(note)
         adapter.notifyDataSetChanged()
     }
+
+    /**
+     * On activity result
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
@@ -57,6 +78,12 @@ class MainActivity : AppCompatActivity(), NoteAdapter.OnNoteItemClickListener {
         }
     }
 
+    /**
+     * Handle add note result
+     *
+     * @param resultCode
+     * @param data
+     */
     private fun handleAddNoteResult(resultCode: Int, data: Intent?) {
         if (resultCode == RESULT_OK) {
             val title = data?.getStringExtra("title") ?: ""
@@ -68,6 +95,12 @@ class MainActivity : AppCompatActivity(), NoteAdapter.OnNoteItemClickListener {
         }
     }
 
+    /**
+     * Handle edit note result
+     *
+     * @param resultCode
+     * @param data
+     */
     private fun handleEditNoteResult(resultCode: Int, data: Intent?) {
         if (resultCode == RESULT_OK) {
             val deleteNote = data?.getBooleanExtra("deleteNote", false) ?: false
@@ -80,6 +113,11 @@ class MainActivity : AppCompatActivity(), NoteAdapter.OnNoteItemClickListener {
         }
     }
 
+    /**
+     * Handle deleted note result
+     *
+     * @param data
+     */
     private fun handleDeletedNoteResult(data: Intent?) {
         val editedTitle = data?.getStringExtra("editedTitle") ?: ""
         val editedDescription = data?.getStringExtra("editedDescription") ?: ""
@@ -99,6 +137,11 @@ class MainActivity : AppCompatActivity(), NoteAdapter.OnNoteItemClickListener {
         }
     }
 
+    /**
+     * Handle edited note result
+     *
+     * @param data
+     */
     private fun handleEditedNoteResult(data: Intent?) {
         val editedTitle = data?.getStringExtra("editedTitle") ?: ""
         val editedDescription = data?.getStringExtra("editedDescription") ?: ""
@@ -120,6 +163,11 @@ class MainActivity : AppCompatActivity(), NoteAdapter.OnNoteItemClickListener {
         }
     }
 
+    /**
+     * On note item click
+     *
+     * @param position
+     */
     override fun onNoteItemClick(position: Int) {
         val selectedNote = noteList[position]
         val editIntent = Intent(this, EditNoteActivity::class.java)

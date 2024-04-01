@@ -37,6 +37,14 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
+/**
+ * Notepad mobile theme
+ *
+ * @param darkTheme
+ * @param dynamicColor
+ * @param content
+ * @receiver
+ */
 @Composable
 fun NotepadMobileTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

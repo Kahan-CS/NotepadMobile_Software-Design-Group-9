@@ -14,11 +14,21 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
+/**
+ * Add note activity
+ *
+ * @constructor Create empty Add note activity
+ */
 class AddNoteActivity : AppCompatActivity() {
     lateinit var titleInput: EditText
     lateinit var descriptionText: EditText
     lateinit var saveNoteBtn: MaterialButton
 
+    /**
+     * On create
+     *
+     * @param savedInstanceState
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_note)
@@ -32,6 +42,10 @@ class AddNoteActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Save note
+     *
+     */
     private fun saveNote() {
         val title = titleInput.text.toString()
         val description = descriptionText.text.toString()
@@ -45,11 +59,20 @@ class AddNoteActivity : AppCompatActivity() {
         finish()
     }
 
+    /**
+     * On back pressed
+     *
+     */
     override fun onBackPressed() {
         saveNote()
         super.onBackPressed()
     }
 
+    /**
+     * Get current timestamp
+     *
+     * @return
+     */
     private fun getCurrentTimestamp(): String {
         val dateFormat = SimpleDateFormat("MMM dd yyyy HH:mm:ss", Locale.getDefault())
         val currentTime = Calendar.getInstance().time
